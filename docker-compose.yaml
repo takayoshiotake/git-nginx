@@ -1,0 +1,11 @@
+version: '3'
+services:
+  git-nginx:
+    build: ./git-nginx
+    volumes:
+      - ./git:/opt/git
+      - ./log-nginx:/var/log/nginx
+      - ./git-nginx/default:/etc/nginx/sites-available/default
+      - ./git-nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8080:80"
