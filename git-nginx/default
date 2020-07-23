@@ -52,6 +52,8 @@ server {
 	}
 
 	location ~ ^/git(/.*) {
+		auth_request /auth;
+		
 		fastcgi_pass unix:/var/run/fcgiwrap.socket;
 		fastcgi_param SCRIPT_FILENAME /usr/lib/git-core/git-http-backend;
 		
@@ -60,6 +62,10 @@ server {
 		fastcgi_param GIT_HTTP_EXPORT_ALL "";
 		fastcgi_param GIT_PROJECT_ROOT /opt/git;
 		fastcgi_param REMOTE_USER $remote_user;
+	}
+
+	location = /auth {
+		return 200;
 	}
 
 	# pass PHP scripts to FastCGI server
