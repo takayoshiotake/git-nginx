@@ -31,6 +31,12 @@ e.g.
 
 ### Docker memo
 
+Run bash on conatiner:
+
+```shell-session
+% docker-compose run git-nginx bash
+```
+
 Delete all containers:
 
 ```shell-session
