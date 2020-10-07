@@ -23,7 +23,7 @@ You can make a new bare repository on `git` directory.
 e.g.
 
 ```shell-session
-% git clone http://localhiost:8080/git/example.git
+% git clone http://localhost:8080/git/example.git
 ```
 
 
