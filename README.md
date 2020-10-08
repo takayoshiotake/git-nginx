@@ -34,7 +34,7 @@ e.g.
 Run bash on conatiner:
 
 ```shell-session
-% docker-compose run git-nginx bash
+% docker-compose run --service-ports git-nginx bash
 ```
 
 Delete all containers:
