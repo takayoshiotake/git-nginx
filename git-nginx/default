@@ -64,8 +64,16 @@ server {
 		fastcgi_param REMOTE_USER $remote_user;
 	}
 
+	# allow access
+	#location = /auth {
+	#	return 200;
+	#}
 	location = /auth {
-		return 200;
+		proxy_pass http://127.0.0.1:3000;
+		proxy_redirect off;
+		proxy_pass_request_body off;
+		proxy_set_header Host $http_host;
+		proxy_set_header X-Original-URI $request_uri;
 	}
 
 	# pass PHP scripts to FastCGI server

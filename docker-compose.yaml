@@ -7,5 +7,6 @@ services:
       - ./log-nginx:/var/log/nginx
       - ./git-nginx/default:/etc/nginx/sites-available/default
       - ./git-nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./.dev/auth:/opt/.dev/auth
     ports:
       - "8080:80"

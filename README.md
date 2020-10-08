@@ -26,6 +26,19 @@ e.g.
 % git clone http://localhost:8080/git/example.git
 ```
 
+### Add authentication to repository
+
+Basic authentication is enabled when repository has `.git-nginx/passwd` file.
+
+e.g. username is `user` and password is `pass`
+
+```shell-session
+% cd example.git
+% mkdir -p .git-nginx && cd "$_"
+% echo user:$(openssl passwd -6 pass) >> passwd
+% cat passwd
+user:$6$zpn/Nlf1zpa.RzsB$VtNvmT6BdIoyXAGwV8Ix7AeCwgDV7l477lOmiWv6k0rx1t5OybEPQ9Ty4k5rnLOhnDBdu5rN90XNyv6pprJDP1
+```
 
 ## Appendix
 
@@ -34,7 +47,7 @@ e.g.
 Run bash on conatiner:
 
 ```shell-session
-% docker-compose run git-nginx bash
+% docker-compose run --service-ports git-nginx bash
 ```
 
 Delete all containers:
