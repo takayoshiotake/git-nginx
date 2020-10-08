@@ -1,3 +1,5 @@
+import base64
+import crypt
 import logging
 import os
 import re
@@ -19,7 +21,25 @@ def route_auth():
     app.logger.info(f"""{request.headers.get('X-Original-Uri')} => {passwordFile}""")
     if not os.path.isfile(passwordFile):
         return '', 200
-    # TODO: Verify the accessing user with the password file
+    # Verify the accessing user with the password file
+    try:
+        if authorization := request.headers.get('Authorization'):
+            if m := re.search('Basic (\S+)$', authorization):
+                user, password = base64.b64decode(m.group(1)).decode(encoding='ascii').split(':')
+                with open(passwordFile, mode='r', encoding='ascii') as f:
+                    while line := f.readline():
+                        # e.g. user:pass => line is user:$6$salt123$MhMr4gc.nIFOX9ZdA3KP4lSRB684iMcUE47pBxQENRYP6Um3vZ3yph28wOwI0nJ0Et.0bUMqLKr59jn67i9QF1
+                        values = line.rstrip(os.linesep).split(':')
+                        if values[0] == user:
+                            expected = values[1]
+                            # $6$salt123$... => $6$salt123
+                            salt = '$'.join(expected.split('$')[:-1])
+                            passwordHash = crypt.crypt(password, salt)
+                            if passwordHash == expected:
+                                return '', 200
+                            break
+    except:
+        return '', 400
     return '', 401, {'WWW-Authenticate': 'Basic realm="Protected"'}
 
 
